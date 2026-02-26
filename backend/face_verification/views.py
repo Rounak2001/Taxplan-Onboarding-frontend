@@ -64,12 +64,16 @@ def verify_face(request, user_id):
     try:
         # Get stored ID photo path
         try:
-            verification = FaceVerification.objects.get(user=user)
-            id_photo_path = verification.id_image_path
-            if not id_photo_path:
-                 return Response({"error": "ID photo not found. Please upload ID photo first."}, status=status.HTTP_404_NOT_FOUND)
-        except FaceVerification.DoesNotExist:
-            return Response({"error": "ID photo not found. Please upload ID photo first."}, status=status.HTTP_404_NOT_FOUND)
+            from authentication.models import IdentityDocument
+            identity_doc = IdentityDocument.objects.filter(user=user).latest('uploaded_at')
+            id_photo_path = identity_doc.file_path
+            
+            # Since FaceVerification record tracking ID photo is decoupled, get/create for live photo tracking
+            verification, _ = FaceVerification.objects.get_or_create(user=user)
+            verification.id_image_path = id_photo_path
+            
+        except Exception:
+            return Response({"error": "Government ID not found. Please upload ID photo first."}, status=status.HTTP_404_NOT_FOUND)
 
         # 1. Download ID photo from Storage (S3)
         from django.core.files.storage import default_storage

@@ -309,21 +309,48 @@ const ConsultantDetail = () => {
                                                         </div>
                                                     </div>
 
-                                                    {doc.gemini_raw_response && (
-                                                        <div style={{ marginTop: 4 }}>
-                                                            <div style={{ fontSize: 11, color: '#64748b', marginBottom: 4 }}>AI Notes:</div>
-                                                            <div style={{ fontSize: 12, color: '#94a3b8', fontStyle: 'italic', background: 'rgba(0,0,0,0.2)', padding: '8px 12px', borderRadius: 6 }}>
-                                                                {(() => {
-                                                                    try {
-                                                                        const parsed = JSON.parse(doc.gemini_raw_response);
-                                                                        return parsed.notes || 'No additional notes.';
-                                                                    } catch (e) {
-                                                                        return 'Could not parse notes.';
-                                                                    }
-                                                                })()}
-                                                            </div>
-                                                        </div>
-                                                    )}
+                                                    {doc.gemini_raw_response && (() => {
+                                                        try {
+                                                            const parsed = JSON.parse(doc.gemini_raw_response);
+                                                            return (
+                                                                <>
+                                                                    {parsed.extracted_name && (
+                                                                        <div>
+                                                                            <div style={{ fontSize: 11, color: '#64748b', marginBottom: 4 }}>Extracted Name:</div>
+                                                                            <div style={{ fontSize: 14, fontWeight: 600, color: '#e2e8f0' }}>{parsed.extracted_name}</div>
+                                                                        </div>
+                                                                    )}
+                                                                    {parsed.extracted_dob && (
+                                                                        <div>
+                                                                            <div style={{ fontSize: 11, color: '#64748b', marginBottom: 4 }}>Extracted DOB:</div>
+                                                                            <div style={{ fontSize: 14, fontWeight: 600, color: '#e2e8f0' }}>{parsed.extracted_dob}</div>
+                                                                        </div>
+                                                                    )}
+                                                                    {parsed.extracted_id_number && (
+                                                                        <div>
+                                                                            <div style={{ fontSize: 11, color: '#64748b', marginBottom: 4 }}>Extracted ID Number:</div>
+                                                                            <div style={{ fontSize: 14, fontWeight: 600, color: '#e2e8f0' }}>{parsed.extracted_id_number}</div>
+                                                                        </div>
+                                                                    )}
+                                                                    <div style={{ marginTop: 4 }}>
+                                                                        <div style={{ fontSize: 11, color: '#64748b', marginBottom: 4 }}>AI Notes:</div>
+                                                                        <div style={{ fontSize: 12, color: '#94a3b8', fontStyle: 'italic', background: 'rgba(0,0,0,0.2)', padding: '8px 12px', borderRadius: 6 }}>
+                                                                            {parsed.notes || 'No additional notes.'}
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+                                                            );
+                                                        } catch (e) {
+                                                            return (
+                                                                <div style={{ marginTop: 4 }}>
+                                                                    <div style={{ fontSize: 11, color: '#64748b', marginBottom: 4 }}>AI Notes:</div>
+                                                                    <div style={{ fontSize: 12, color: '#94a3b8', fontStyle: 'italic', background: 'rgba(0,0,0,0.2)', padding: '8px 12px', borderRadius: 6 }}>
+                                                                        Could not parse notes.
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        }
+                                                    })()}
                                                 </div>
                                             </div>
                                         </div>

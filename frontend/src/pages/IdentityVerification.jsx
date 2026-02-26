@@ -30,9 +30,14 @@ const IdentityVerification = () => {
         try {
             const formData = new FormData();
             formData.append('identity_document', file);
-            await uploadIdentityDocument(formData);
-            updateStepFlags({ has_identity_doc: true });
-            navigate('/onboarding/face-verification');
+            const response = await uploadIdentityDocument(formData);
+
+            if (response.verification?.status === 'Verified') {
+                updateStepFlags({ has_identity_doc: true });
+                navigate('/onboarding/face-verification');
+            } else {
+                setError('Document verification failed. Please upload a clear valid Government ID.');
+            }
         } catch (err) { setError('Upload failed. Please try again.'); console.error(err); }
         finally { setUploading(false); }
     };

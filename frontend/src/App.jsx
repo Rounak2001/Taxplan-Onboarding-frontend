@@ -88,7 +88,7 @@ const StepGuard = ({ step, children }) => {
       allowed = !onboarded;
       break;
     case 'identity':
-      allowed = onboarded && !hasIdentity;
+      allowed = onboarded && !verified;
       break;
     case 'face':
       allowed = onboarded && hasIdentity && !verified;

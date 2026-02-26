@@ -209,11 +209,15 @@ class IdentityDocumentVerifier:
             
             Identify the type of document. Is it an Aadhaar Card, a PAN Card, a Masked Aadhaar, a Masked PAN, or something else (Unknown/Invalid)?
             Also, verify if the document looks like a valid, legitimate document (Verification Status: Verified or Invalid).
+            Extract the following details from the document if they are visible: Full Name, Date of Birth (DOB), and the ID Number (e.g. Aadhaar Number or PAN Number).
             
             Respond strictly in the following JSON format:
             {
                 "document_type": "Aadhaar Card" | "PAN Card" | "Masked Aadhaar" | "Masked PAN" | "Unknown",
                 "verification_status": "Verified" | "Invalid",
+                "extracted_name": "Full Name",
+                "extracted_dob": "DD/MM/YYYY text",
+                "extracted_id_number": "ID Number text",
                 "notes": "Any additional observations"
             }
             """

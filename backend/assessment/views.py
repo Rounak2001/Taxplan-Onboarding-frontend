@@ -405,11 +405,11 @@ class UserSessionViewSet(viewsets.ModelViewSet):
             
             # Rule 2: Face Match (if exactly 1 face)
             elif face_count == 1:
-                # Get User's Reference Photo
+                # Get User's Reference Photo (Live Photo)
                 from face_verification.models import FaceVerification
                 try:
                     verification = FaceVerification.objects.get(user=session.user)
-                    ref_image_path = verification.id_image_path
+                    ref_image_path = verification.live_image_path
                     
                     if ref_image_path:
                     
